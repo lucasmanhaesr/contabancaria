@@ -1,5 +1,5 @@
-import conta.util.Cores;
-
+import model.Conta;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Menu {
@@ -7,10 +7,17 @@ public class Menu {
     public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
 
+        Conta c1 = new Conta(1, 123, 1, "Adriana", 10000.0f);
+        c1.visualizar();
+        c1.sacar(12000.0f);
+        c1.visualizar();
+        c1.depositar(5000.0f);
+        c1.visualizar();
+
         int opcao;
 
         while (true) {
-            System.out.println(Cores.TEXT_GREEN_BRIGHT + Cores.ANSI_BLACK_BACKGROUND + "***************************************************");
+            System.out.println("***************************************************");
             System.out.println("                                                   ");
             System.out.println("                        ITAÚ                       ");
             System.out.println("                                                   ");
@@ -30,9 +37,10 @@ public class Menu {
             System.out.println("                                                   ");
             System.out.print("Entre com a opção desejada: ");
             opcao = scanf.nextInt();
+            scanf.nextLine();
 
             if(opcao == 9){
-                System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + Cores.ANSI_BLACK_BACKGROUND + "Banco Itaú - Feito pra você!");
+                System.out.println("Banco Itaú - Feito pra você!");
                 sobre();
                 scanf.close();
                 System.exit(0);
@@ -40,31 +48,45 @@ public class Menu {
 
             switch (opcao) {
                 case 1:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Criar conta");
+                    System.out.print("Digite seu nome completo: ");
+                    String nome = scanf.nextLine();
+                    System.out.print("Digite 1 para Conta Corrente ou 2 para Conta Poupança: ");
+                    int tipo = scanf.nextInt();
+                    while(tipo != 1 && tipo != 2){
+                        System.out.println("\nNúmero inválido");
+                        System.out.print("Digite 1 para Conta Corrente ou 2 para Conta Poupança: ");
+                        tipo = scanf.nextInt();
+                    }
+                    Random random = new Random();
+                    int numero = random.nextInt(99999);
+                    int agencia = random.nextInt(999);
+                    float saldo = 0;
+                    Conta c2 = new Conta(numero, agencia, tipo, nome, saldo);
+                    c2.visualizar();
                     break;
                 case 2:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Listar todas as contas");
+                    System.out.println("Listar todas as contas");
                     break;
                 case 3:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Consultar dados da conta - Por número");
+                    System.out.println("Consultar dados da conta - Por número");
                     break;
                 case 4:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Atualizar da conta");
+                    System.out.println("Atualizar da conta");
                     break;
                 case 5:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Apagar a conta");
+                    System.out.println("Apagar a conta");
                     break;
                 case 6:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Saque");
+                    System.out.println("Saque");
                     break;
                 case 7:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Deposito");
+                    System.out.println("Deposito");
                     break;
                 case 8:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Tranferência entre contas");
+                    System.out.println("Tranferência entre contas");
                     break;
                 default:
-                    System.out.println(Cores.TEXT_GREEN_BOLD_BRIGHT + "Opcao invalida");
+                    System.out.println("Opcao invalida");
                     break;
             }
         }
