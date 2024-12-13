@@ -1,5 +1,6 @@
 import model.Conta;
 import model.ContaCorrente;
+import model.ContaPoupanca;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -56,9 +57,17 @@ public class Menu {
                     int numero = random.nextInt(99999);
                     int agencia = random.nextInt(999);
                     float saldo = 0;
-                    float limite = 500;
-                    ContaCorrente c1 = new ContaCorrente(numero, agencia, tipo, nome, saldo, limite);
-                    c1.visualizar();
+                    if(tipo == 1){
+                        ContaCorrente cc = new ContaCorrente(numero, agencia, tipo, nome, saldo);
+                        cc.visualizar();
+                    }
+                    else{
+                        System.out.print("Digite a data do seu aniversario: ");
+                        String data = scanf.next();
+                        int aniversario = getAniversario(data);
+                        ContaPoupanca cp = new ContaPoupanca(numero, agencia, tipo, nome, saldo, aniversario);
+                        cp.visualizar();
+                    }
                     break;
                 case 2:
                     System.out.println("Listar todas as contas");
@@ -95,5 +104,21 @@ public class Menu {
         System.out.println("https://github.com/lucasmanhaesr/contabancaria");
         System.out.println("                                             ");
         System.out.println("*********************************************");
+    }
+
+    private static int getAniversario(String data) {
+        int aniversario;
+        if(data.contains("/")){
+            String dataFormatada = data.replace("/", "");
+            aniversario = Integer.parseInt(dataFormatada);
+        }
+        else if(data.contains(".")){
+            String dataFormatada = data.replace(".", "");
+            aniversario = Integer.parseInt(dataFormatada);
+        }
+        else{
+            aniversario = Integer.parseInt(data);
+        }
+        return aniversario;
     }
 }
