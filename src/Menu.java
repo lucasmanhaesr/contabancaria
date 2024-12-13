@@ -1,4 +1,6 @@
 import model.Conta;
+import model.ContaCorrente;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -6,13 +8,6 @@ public class Menu {
 
     public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
-
-        Conta c1 = new Conta(1, 123, 1, "Adriana", 10000.0f);
-        c1.visualizar();
-        c1.sacar(12000.0f);
-        c1.visualizar();
-        c1.depositar(5000.0f);
-        c1.visualizar();
 
         int opcao;
 
@@ -61,8 +56,9 @@ public class Menu {
                     int numero = random.nextInt(99999);
                     int agencia = random.nextInt(999);
                     float saldo = 0;
-                    Conta c2 = new Conta(numero, agencia, tipo, nome, saldo);
-                    c2.visualizar();
+                    float limite = 500;
+                    ContaCorrente c1 = new ContaCorrente(numero, agencia, tipo, nome, saldo, limite);
+                    c1.visualizar();
                     break;
                 case 2:
                     System.out.println("Listar todas as contas");
