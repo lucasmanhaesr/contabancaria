@@ -1,12 +1,14 @@
 package model;
 
-public class ContaCorrente extends Conta{
+public class ContaCorrente extends Conta {
 
+    public Titular titular;
     private float limite;
 
-    public ContaCorrente(int numero, int agencia, int tipo, String titular, float saldo, float limite) {
+    public ContaCorrente(int numero, int agencia, int tipo, String titular, float saldo, float limite, Titular titular1) {
         super(numero, agencia, tipo, titular, saldo);
         this.limite = limite;
+        Titular titular2 = new Titular("", "");
     }
 
     //Sobrecarga
@@ -32,11 +34,4 @@ public class ContaCorrente extends Conta{
         return true;
     }
 
-    //Sobreescrita
-    @Override
-    public void visualizar(){
-        super.visualizar();
-        System.out.println("Limite de crédito: " + this.getLimite());
-        System.out.println("***************************************************\n\n");
-    }
 }

@@ -1,8 +1,7 @@
-import model.Conta;
-import model.ContaCorrente;
-import model.ContaPoupanca;
+import util.Cores;
 
-import java.util.Random;
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -32,66 +31,64 @@ public class Menu {
             System.out.println("***************************************************");
             System.out.println("                                                   ");
             System.out.print("Entre com a opção desejada: ");
-            opcao = scanf.nextInt();
-            scanf.nextLine();
 
-            if(opcao == 9){
-                System.out.println("Banco Itaú - Feito pra você!");
-                sobre();
-                scanf.close();
-                System.exit(0);
+            try{
+                opcao = scanf.nextInt();
+            }catch(InputMismatchException exception){
+                System.err.println("Excessão: " + exception.getLocalizedMessage() + " (" + exception.getCause() + ") ");
+                System.out.print("Digite um número inteiros entre 1 - 9: ");
+                scanf.nextLine();
+                opcao = 0;
             }
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Digite seu nome completo: ");
-                    String nome = scanf.nextLine();
-                    System.out.print("Digite 1 para Conta Corrente ou 2 para Conta Poupança: ");
-                    int tipo = scanf.nextInt();
-                    while(tipo != 1 && tipo != 2){
-                        System.out.println("\nNúmero inválido");
-                        System.out.print("Digite 1 para Conta Corrente ou 2 para Conta Poupança: ");
-                        tipo = scanf.nextInt();
-                    }
-                    Random random = new Random();
-                    int numero = random.nextInt(99999);
-                    int agencia = random.nextInt(999);
-                    float saldo = 0;
-                    if(tipo == 1){
-                        ContaCorrente cc = new ContaCorrente(numero, agencia, tipo, nome, saldo);
-                        cc.visualizar();
-                    }
-                    else{
-                        System.out.print("Digite a data do seu aniversario: ");
-                        String data = scanf.next();
-                        int aniversario = getAniversario(data);
-                        ContaPoupanca cp = new ContaPoupanca(numero, agencia, tipo, nome, saldo, aniversario);
-                        cp.visualizar();
-                    }
+                    System.out.println("\n Criar Conta");
+
+                    keyPress();
                     break;
                 case 2:
-                    System.out.println("Listar todas as contas");
+                    System.out.println("\n Listar todas as Contas");
+
+                    keyPress();
                     break;
                 case 3:
-                    System.out.println("Consultar dados da conta - Por número");
+                    System.out.println("\n Buscar Conta por número");
+
+                    keyPress();
                     break;
                 case 4:
-                    System.out.println("Atualizar da conta");
+                    System.out.println("\n Atualizar dados da Conta");
+
+                    keyPress();
                     break;
                 case 5:
-                    System.out.println("Apagar a conta");
+                    System.out.println("\n Apagar Conta");
+
+                    keyPress();
                     break;
                 case 6:
-                    System.out.println("Saque");
+                    System.out.println("\n Sacar");
+
+                    keyPress();
                     break;
                 case 7:
-                    System.out.println("Deposito");
+                    System.out.println("\n Depositar");
+
+                    keyPress();
                     break;
                 case 8:
-                    System.out.println("Tranferência entre contas");
+                    System.out.println("\n Transferir");
+
+                    keyPress();
                     break;
+                case 9:
+                    keyPress();
+                    System.exit(0);
                 default:
-                    System.out.println("Opcao invalida");
+                    System.out.println("Opção Inválida" + Cores.TEXT_RESET);
+
+                    keyPress();
                     break;
             }
         }
@@ -106,19 +103,17 @@ public class Menu {
         System.out.println("*********************************************");
     }
 
-    private static int getAniversario(String data) {
-        int aniversario;
-        if(data.contains("/")){
-            String dataFormatada = data.replace("/", "");
-            aniversario = Integer.parseInt(dataFormatada);
+    public static void keyPress() {
+        try {
+
+            System.out.println(Cores.TEXT_RESET + "\n\nPressione Enter para Continuar...");
+            System.in.read();
+
+        } catch (IOException e) {
+
+            System.out.println("Você pressionou uma tecla diferente de enter!");
+
         }
-        else if(data.contains(".")){
-            String dataFormatada = data.replace(".", "");
-            aniversario = Integer.parseInt(dataFormatada);
-        }
-        else{
-            aniversario = Integer.parseInt(data);
-        }
-        return aniversario;
     }
+
 }
