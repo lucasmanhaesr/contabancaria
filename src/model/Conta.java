@@ -5,13 +5,13 @@ public abstract class Conta {
     private int numero;
     private int agencia;
     private int tipo;
-    private Titular titular;
+    private String titular;
     private float saldo;
 
     //############ BOILERPLATE #####################
     //Constructor
     public Conta(){}
-    public Conta(int numero, int agencia, int tipo, Titular titular, float saldo) {
+    public Conta(int numero, int agencia, int tipo, String titular, float saldo) {
         this.numero = numero;
         this.agencia = agencia;
         this.tipo = tipo;

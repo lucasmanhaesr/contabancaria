@@ -2,13 +2,11 @@ package model;
 
 public class ContaCorrente extends Conta {
 
-    public Titular titular;
     private float limite;
 
-    public ContaCorrente(int numero, int agencia, int tipo, String titular, float saldo, float limite, Titular titular1) {
+    public ContaCorrente(int numero, int agencia, int tipo, String titular, float saldo, float limite) {
         super(numero, agencia, tipo, titular, saldo);
         this.limite = limite;
-        Titular titular2 = new Titular("", "");
     }
 
     //Sobrecarga

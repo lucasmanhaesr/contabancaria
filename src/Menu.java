@@ -1,7 +1,6 @@
 import controller.ContaController;
-import model.Conta;
 import model.ContaCorrente;
-import model.Titular;
+import model.ContaPoupanca;
 import util.Cores;
 
 import java.io.IOException;
@@ -10,12 +9,27 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Scanner scanf = new Scanner(System.in);
 
         ContaController contas = new ContaController();
 
-        int opcao;
+        int opcao, numero, agencia, tipo, aniversario;
+        String titular;
+        float saldo, limite;
+
+//        TESTE MOCK
+//        ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000f, 100.0f);
+//        contas.cadastrar(cc1);
+//
+//        ContaCorrente cc2 = new ContaCorrente(contas.gerarNumero(), 124, 1, "Maria da Silva", 2000f, 100.0f);
+//        contas.cadastrar(cc2);
+//
+//        ContaPoupanca cp1 = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Mariana dos Santos", 4000f, 12);
+//        contas.cadastrar(cp1);
+//
+//        ContaPoupanca cp2 = new ContaPoupanca(contas.gerarNumero(), 125, 2, "Juliana Ramos", 8000f, 15);
+//        contas.cadastrar(cp2);
 
         while (true) {
             System.out.println("***************************************************");
@@ -47,21 +61,42 @@ public class Menu {
                 opcao = 0;
             }
 
+            if (opcao == 9) {
+                System.out.println("\n\nBanco Itaú - Feito pra você");
+                sobre();
+                scanf.close();
+                System.exit(0);
+            }
+
             switch (opcao) {
                 case 1:
-                    System.out.println("\n Criar Conta");
-                    System.out.print("\n Digite o nome completo: ");
-                    String nome = scanf.nextLine();
+                    System.out.println("\nCriar Conta");
+                    System.out.println("Digite o Numero da Agência: ");
+                    agencia = scanf.nextInt();
+                    System.out.println("Digite o Nome do Titular: ");
+                    scanf.skip("\\R?");
+                    titular = scanf.nextLine();
 
-                    System.out.print("\n Digite o nome do conta: ");
-                    String cpf = scanf.nextLine();
+                    do {
+                        System.out.println("Digite o Tipo da Conta (1-CC ou 2-CP): ");
+                        tipo = scanf.nextInt();
+                    }while(tipo < 1 && tipo > 2);
 
-                    System.out.print("\n Digite 1 para Conta Corrente ou 2 para Conta Poupança: ");
-                    int tipo = scanf.nextInt();
+                    System.out.println("Digite o Saldo da Conta (R$): ");
+                    saldo = scanf.nextFloat();
 
-
-                    Titular titular = new Titular(nome, cpf);
-                    //Conta cc = new ContaCorrente();
+                    switch(tipo) {
+                        case 1 -> {
+                            System.out.println("Digite o Limite de Crédito (R$): ");
+                            limite = scanf.nextFloat();
+                            contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+                        }
+                        case 2 -> {
+                            System.out.println("Digite o dia do Aniversario da Conta: ");
+                            aniversario = scanf.nextInt();
+                            contas.cadastrar(new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+                        }
+                    }
 
                     keyPress();
                     break;
@@ -72,17 +107,59 @@ public class Menu {
                     break;
                 case 3:
                     System.out.println("\n Buscar Conta por número");
+                    System.out.println("Digite o número da conta: ");
+                    numero = scanf.nextInt();
 
+                    contas.procurarPorNumero(numero);
                     keyPress();
                     break;
                 case 4:
                     System.out.println("\n Atualizar dados da Conta");
+                    System.out.println("Digite o número da conta: ");
+                    numero = scanf.nextInt();
+
+                    var buscaConta = contas.buscarNaCollection(numero);
+
+                    if (buscaConta != null) {
+
+                        System.out.println("Digite o Numero da Agência: ");
+                        agencia = scanf.nextInt();
+                        System.out.println("Digite o Nome do Titular: ");
+                        scanf.skip("\\R?");
+                        titular = scanf.nextLine();
+
+                        System.out.println("Digite o Saldo da Conta (R$): ");
+                        saldo = scanf.nextFloat();
+
+                        tipo = buscaConta.getTipo();
+
+                        switch(tipo) {
+                            case 1 -> {
+                                System.out.println("Digite o Limite de Crédito (R$): ");
+                                limite = scanf.nextFloat();
+                                contas.atualizar(new ContaCorrente(numero, agencia, tipo, titular, saldo, limite));
+                            }
+                            case 2 -> {
+                                System.out.println("Digite o dia do Aniversario da Conta: ");
+                                aniversario = scanf.nextInt();
+                                contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
+                            }
+                            default ->{
+                                System.out.println("Tipo de conta inválido!");
+                            }
+                        }
+
+                    }else {
+                        System.out.println("\nConta não encontrada!");
+                    }
 
                     keyPress();
                     break;
                 case 5:
                     System.out.println("\n Apagar Conta");
-
+                    System.out.println("Digite o número da conta: ");
+                    numero = scanf.nextInt();
+                    contas.deletar(numero);
                     keyPress();
                     break;
                 case 6:
