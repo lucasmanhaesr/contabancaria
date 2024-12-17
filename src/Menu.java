@@ -1,3 +1,7 @@
+import controller.ContaController;
+import model.Conta;
+import model.ContaCorrente;
+import model.Titular;
 import util.Cores;
 
 import java.io.IOException;
@@ -8,6 +12,8 @@ public class Menu {
 
     public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
+
+        ContaController contas = new ContaController();
 
         int opcao;
 
@@ -44,12 +50,24 @@ public class Menu {
             switch (opcao) {
                 case 1:
                     System.out.println("\n Criar Conta");
+                    System.out.print("\n Digite o nome completo: ");
+                    String nome = scanf.nextLine();
+
+                    System.out.print("\n Digite o nome do conta: ");
+                    String cpf = scanf.nextLine();
+
+                    System.out.print("\n Digite 1 para Conta Corrente ou 2 para Conta Poupança: ");
+                    int tipo = scanf.nextInt();
+
+
+                    Titular titular = new Titular(nome, cpf);
+                    //Conta cc = new ContaCorrente();
 
                     keyPress();
                     break;
                 case 2:
                     System.out.println("\n Listar todas as Contas");
-
+                    contas.listarTodas();
                     keyPress();
                     break;
                 case 3:
