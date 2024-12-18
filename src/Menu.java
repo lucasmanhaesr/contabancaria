@@ -5,18 +5,19 @@ import util.Cores;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Menu {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
 
         ContaController contas = new ContaController();
 
-        int opcao, numero, agencia, tipo, aniversario;
+        int opcao, numero, agencia, tipo, aniversario, numeroDestino;
         String titular;
-        float saldo, limite;
+        float saldo, limite, valor;
 
 //        TESTE MOCK
 //        ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000f, 100.0f);
@@ -71,8 +72,8 @@ public class Menu {
             switch (opcao) {
                 case 1:
                     System.out.println("\nCriar Conta");
-                    System.out.println("Digite o Numero da Agência: ");
-                    agencia = scanf.nextInt();
+                    Random random = new Random();
+                    agencia = random.nextInt(999);
                     System.out.println("Digite o Nome do Titular: ");
                     scanf.skip("\\R?");
                     titular = scanf.nextLine();
@@ -144,9 +145,7 @@ public class Menu {
                                 aniversario = scanf.nextInt();
                                 contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
                             }
-                            default ->{
-                                System.out.println("Tipo de conta inválido!");
-                            }
+                            default -> System.out.println("Tipo de conta inválido!");
                         }
 
                     }else {
@@ -163,23 +162,52 @@ public class Menu {
                     keyPress();
                     break;
                 case 6:
-                    System.out.println("\n Sacar");
+                    System.out.println(Cores.TEXT_WHITE + "Saque\n\n");
+
+                    System.out.println("Digite o Numero da conta: ");
+                    numero = scanf.nextInt();
+
+                    do {
+                        System.out.println("Digite o Valor do Saque (R$): ");
+                        valor = scanf.nextFloat();
+                    } while (valor <= 0);
+
+                    contas.sacar(numero, valor);
 
                     keyPress();
                     break;
                 case 7:
-                    System.out.println("\n Depositar");
+                    System.out.println(Cores.TEXT_WHITE + "Depósito\n\n");
+
+                    System.out.println("Digite o Numero da conta: ");
+                    numero = scanf.nextInt();
+
+                    do {
+                        System.out.println("Digite o Valor do Depósito (R$): ");
+                        valor = scanf.nextFloat();
+                    } while (valor <= 0);
+
+                    contas.depositar(numero, valor);
 
                     keyPress();
                     break;
                 case 8:
-                    System.out.println("\n Transferir");
+                    System.out.println(Cores.TEXT_WHITE + "Transferência entre Contas\n\n");
+
+                    System.out.println("Digite o Numero da Conta de Origem: ");
+                    numero = scanf.nextInt();
+                    System.out.println("Digite o Numero da Conta de Destino: ");
+                    numeroDestino = scanf.nextInt();
+
+                    do {
+                        System.out.println("Digite o Valor da Transferência (R$): ");
+                        valor = scanf.nextFloat();
+                    } while (valor <= 0);
+
+                    contas.transferir(numero, numeroDestino, valor);
 
                     keyPress();
                     break;
-                case 9:
-                    keyPress();
-                    System.exit(0);
                 default:
                     System.out.println("Opção Inválida" + Cores.TEXT_RESET);
 
